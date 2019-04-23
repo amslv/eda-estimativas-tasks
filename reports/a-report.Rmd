@@ -1,5 +1,7 @@
 ---
 title: "EDA SIP"
+author: 
+- name: Ana Maria Santos Silva
 output:
     html_document:
     df_print: paged

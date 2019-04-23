@@ -75,6 +75,38 @@ por_time = estimativas_raw %>%
 
 ## Qual a relação entre as estimativas e horas reais tomadas na empresa como um todo e em diferentes categorias de tarefa?
 
+```{r}
+ggplot(estimativas_raw, aes(x = HoursEstimate, y = HoursActual)) + 
+  geom_line(aes(color = Category), size = 1, alpha = 0.5) + 
+    geom_smooth()
+```
+
+### Análise
+Observando o gráfico acima, é possível inferir que as atividades operacionais possuem uma maior diferença entre a quantidade de horas necessárias para concluir a tarefa, e a quantidade de horas inicialmente estimada. É verificável também que todas as categorias de tarefas possuem uma cauda maior a direita. Além disso, é possível observar que há uma correlação positiva não-linear.
+
 
 ## Equipes com mais desenvolvedores produzem estimativas com mais ou menos erro que equipes menores? 
 
+```{r}
+por_time %>%
+    filter(devs < 10) %>%
+        ggplot(aes(x= estimativas,y = erro_medio_abs)) +
+        geom_line(alpha = 0.7)+
+        geom_smooth(method =lm)+
+        labs(x = "Quantidade de Estimativas feitas pela equipe", y = "Erro médio da estimativa", title = "Projetos com menos de 10 devs")
+
+```
+```{r}
+por_time %>%
+    filter(devs >= 10) %>%
+        ggplot(aes(x= estimativas,y = erro_medio_abs)) +
+        geom_line(alpha = 0.7)+
+        geom_smooth(method =lm)+
+        labs(x = "Quantidade de Estimativas feitas pela equipe", y = "Erro médio da estimativa", title = "Projetos com 10 ou mais devs")
+
+```
+
+
+### Análise
+
+Ao analisar os gráficos acima (o primeiro gráfico engloba projetos com menos de 10 desenvolvedores alocados, e o segundo para projetos com 10 ou mais desenvolvedores alocados). Em ambos os casos, é verificável que existe uma correlação negativa linear forte entre a quantidade de estimativas e o erro médio na estimativa. A partir dessa correlação é possível visualizar que, quanto mais estimativas feitas pela equipe, menor é o erro médio.
